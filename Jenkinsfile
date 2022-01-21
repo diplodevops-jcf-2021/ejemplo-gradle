@@ -9,10 +9,11 @@ pipeline{
         }
         stage("sonar"){
             steps{
-                echo "======== ${env.STAGE_NAME} ========"
-                def scannerHome = tool 'sonar-scanner';
-                withSonarQubeEnv('sonarcube-server') { // If you have configured more than one global server connection, you can specify its name
-                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ejemplo-gradle -Dsonar.java.binaries=build"
+                script {
+                    def scannerHome = tool 'sonar-scanner';
+                    withSonarQubeEnv('sonarcube-server') { // If you have configured more than one global server connection, you can specify its name
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ejemplo-maven -Dsonar.java.binaries=build"
+                    }
                 }
             }
         }
