@@ -8,10 +8,9 @@ pipeline{
     stages{
         stage("Pipeline"){
             steps{
-                
-                echo "======== ${env.STAGE_NAME} ========"
                 script{
                     filename = params.buildTool == "maven" ? 'maven.groovy' : 'gradle.groovy'
+	                echo filename
 	                def ejecucion = load filename
 	                ejecucion.call()
                 }
