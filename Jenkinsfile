@@ -20,7 +20,8 @@ pipeline{
         stage("run"){
             steps{
                 echo "======== ${env.STAGE_NAME} ========"
-                sh "nohup ./gradlew bootRun"
+                sh "nohup ./gradlew bootRun &"
+                sh "sleep 10"
             }
         }
         stage("test"){
