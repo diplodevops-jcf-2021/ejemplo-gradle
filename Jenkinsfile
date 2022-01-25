@@ -1,6 +1,10 @@
 pipeline{
     agent any
-
+    
+    environment {
+	    STAGE = ''
+	}
+    
     parameters {
         choice choices: ['gradle', 'maven'], description: 'Indicar herramienta construcción', name: 'buildTool'
     }
@@ -15,6 +19,15 @@ pipeline{
 	                ejecucion.call()
                 }
             }
+        }
+    }
+    post {
+        failure {
+            slackSend message: "[Javier Contreras][${env.JOB_NAME}][${params.buildTool}] Ejecución fallida en stage [${STAGE}]."
+        }
+        success {
+            slackSend message: "[Javier Contreras][${env.JOB_NAME}][${params.buildTool}] Ejecución exitosa."
+
         }
     }
 }

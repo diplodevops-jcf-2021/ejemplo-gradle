@@ -6,10 +6,12 @@
 
 def call(){
     stage("build & test"){
+        STAGE = env.STAGE
         echo "======== ${env.STAGE_NAME} ========"
         sh "./gradlew clean build"
     }
     stage("sonar"){
+        STAGE = env.STAGE
         script {
             def scannerHome = tool 'sonar-scanner';
             withSonarQubeEnv('sonarcube-server') { // If you have configured more than one global server connection, you can specify its name
@@ -18,15 +20,18 @@ def call(){
         }
     }
     stage("run"){
+        STAGE = env.STAGE
         echo "======== ${env.STAGE_NAME} ========"
         sh "nohup ./gradlew bootRun &"
         sh "sleep 10"
     }
     stage("test"){
+        STAGE = env.STAGE
         echo "======== ${env.STAGE_NAME} ========"
         sh "curl -X GET 'http://localhost:8181/rest/mscovid/test?msg=testing'"
     }
     stage("nexus"){
+        STAGE = env.STAGE
         echo "======== ${env.STAGE_NAME} ========"
         nexusPublisher nexusInstanceId: 'test-nexus',
         nexusRepositoryId: 'ejemplo-gradle',
